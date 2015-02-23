@@ -1,9 +1,10 @@
 var cities = require('./cities.js');
 var distanceCalculator = require('./distanceCalculator.js');
+var log = require('./log.js').log;
 
 var geneticSalesman = function(genes, assessFitness, initiateBloodline, mutate, availableResources){
   var options = {
-    numberOfBloodlines: 10,
+    numberOfBloodlines: 20,
     offspringPerSurvivor: 50,
   };
 
@@ -12,8 +13,8 @@ var geneticSalesman = function(genes, assessFitness, initiateBloodline, mutate, 
     bloodlines.push(initiateBloodline(genes));
   }
 
+  var startingResources = availableResources;
   while(availableResources){
-    console.log('\n\n\nGeneration:', 100 - availableResources);
     for(var i = 0; i < bloodlines.length; i++){
       var survivor = bloodlines[i];
       var survivorFitness = assessFitness(survivor);
@@ -25,10 +26,9 @@ var geneticSalesman = function(genes, assessFitness, initiateBloodline, mutate, 
           survivorFitness = currentFitness;
         }
       }
-      console.log(survivorFitness);
       bloodlines[i] = survivor;
     }
-
+    log({generation: 1 + startingResources - availableResources, survivorFitness: bloodlines.map(assessFitness).sort()});
     availableResources--;
   }
 
@@ -74,4 +74,4 @@ var calculateDistance = function(route){
   });
 }
 
-geneticSalesman(cities, calculateDistance, createRoute, alterRoute, 100);
+geneticSalesman(cities, calculateDistance, createRoute, alterRoute, 300);
