@@ -3,43 +3,9 @@ var geneticSalesman = function(genes, assessFitness, initiateBloodline, mutate, 
     numberOfBloodlines: 10,
     offspringPerSurvivor: 50,
   };
-  var generation = 1;
 
-  var bloodlines = [];
-  for(var i = 0; i < options.numberOfBloodlines; i++){
-    bloodlines.push(initiateBloodline(genes));
-  }
+  /* -------------------- Complete me! -------------------- */
 
-  while(availableResources){
-    console.log('\n\n\nGeneration:', generation);
-    for(var i = 0; i < bloodlines.length; i++){
-      var survivor = bloodlines[i];
-      var survivorFitness = assessFitness(survivor);
-      for(var offspring = 0; offspring < options.offspringPerSurvivor; offspring++){
-        var currentOffspring = mutate(bloodlines[i]);
-        var currentFitness = assessFitness(currentOffspring);
-        if(currentFitness < survivorFitness){
-          survivor = currentOffspring;
-          survivorFitness = currentFitness;
-        }
-      }
-      console.log(survivorFitness);
-      bloodlines[i] = survivor;
-    }
-
-    availableResources--;
-    generation++;
-  }
-
-  bloodlines.sort(function(bloodline1, bloodline2){
-    return assessFitness(bloodline1) - assessFitness(bloodline2);
-  });
-
-  var optimalRoute = bloodlines[0];
-  var optimalFitness = assessFitness(bloodlines[0]);
-
-  console.log("optimalRoute", optimalFitness, "meters");
-  console.log('route', optimalRoute);
   return optimalRoute;
 }
 
@@ -54,12 +20,9 @@ var createRoute = function(cities){
 }
 
 var alterRoute = function(route){
-  var alteredRoute = route.slice();
-  var index1 = Math.floor(Math.random() * route.length)
-  var index2 = Math.floor(Math.random() * route.length)
-  alteredRoute[index1] = alteredRoute[index2];
-  alteredRoute[index2] = route[index1];
-  return alteredRoute;
+
+  /* -------------------- Complete me! -------------------- */
+
 }
 
 var calculateDistance = function(route){
