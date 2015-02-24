@@ -10,36 +10,49 @@ var geneticSalesman = function(genes, assessFitness, initiateBloodline, mutate, 
 
   var bloodlines = [];
   for(var i = 0; i < options.numberOfBloodlines; i++){
-    bloodlines.push(initiateBloodline(genes));
+    bloodlines.push({
+      stagnant: 0,
+      survivor: initiateBloodline(genes)
+    });
   }
 
   var startingResources = availableResources;
   while(availableResources){
     for(var i = 0; i < bloodlines.length; i++){
-      var survivor = bloodlines[i];
+      var survivor = bloodlines[i].survivor;
       var survivorFitness = assessFitness(survivor);
+      var stagnantion = 0;
       for(var offspring = 0; offspring < options.offspringPerSurvivor; offspring++){
-        var currentOffspring = mutate(bloodlines[i]);
+        var currentOffspring = mutate(survivor);
         var currentFitness = assessFitness(currentOffspring);
         if(currentFitness < survivorFitness){
           survivor = currentOffspring;
           survivorFitness = currentFitness;
         }
       }
-      bloodlines[i] = survivor;
+      if(bloodlines[i].survivor === survivor){
+        stagnantion = bloodlines[i].stagnant + 1;
+      }
+      bloodlines[i] = {'survivor': survivor, 'stagnant': stagnantion };
+      console.log('#'+i+' stagnant: '+bloodlines[i].stagnant);
     }
-    log({generation: 1 + startingResources - availableResources, survivorFitness: bloodlines.map(assessFitness).sort()});
+    log({
+      generation: 1 + startingResources - availableResources,
+      survivorFitness: bloodlines.map(function(bloodline){
+        return ''+assessFitness(bloodline.survivor)+' stagnation: '+bloodline.stagnant;
+      }).sort()
+    });
     availableResources--;
   }
 
   bloodlines.sort(function(bloodline1, bloodline2){
-    return assessFitness(bloodline1) - assessFitness(bloodline2);
+    return assessFitness(bloodline1.survivor) - assessFitness(bloodline2.survivor);
   });
 
-  var optimalRoute = bloodlines[0];
-  var optimalFitness = assessFitness(bloodlines[0]);
+  var optimalRoute = bloodlines[0].survivor;
+  var optimalFitness = assessFitness(bloodlines[0].survivor);
 
-  console.log("optimalRoute", optimalFitness, "meters");
+  console.log("optimalRoute", optimalFitness, "meters", 'generations stagnant', bloodlines[0].stagnant);
   return optimalRoute;
 }
 
