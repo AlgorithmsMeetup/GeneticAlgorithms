@@ -4,8 +4,9 @@ var log = require('./log.js').log;
 
 var geneticSalesman = function(genes, assessFitness, initiateBloodline, mutate, availableResources){
   var options = {
-    numberOfBloodlines: 20,
-    offspringPerSurvivor: 50,
+    numberOfBloodlines: 50,
+    offspringPerSurvivor: 20,
+    maxStagnant: 100
   };
 
   var bloodlines = [];
@@ -21,6 +22,9 @@ var geneticSalesman = function(genes, assessFitness, initiateBloodline, mutate, 
     for(var i = 0; i < bloodlines.length; i++){
       var survivor = bloodlines[i].survivor;
       var survivorFitness = assessFitness(survivor);
+      if(bloodlines[i].stagnant > options.maxStagnant){
+        bloodlines[i].stagnant = bloodlines[i].stagnant-1;
+      }
       var stagnantion = 0;
       for(var offspring = 0; offspring < options.offspringPerSurvivor; offspring++){
         var currentOffspring = mutate(survivor);
@@ -34,12 +38,15 @@ var geneticSalesman = function(genes, assessFitness, initiateBloodline, mutate, 
         stagnantion = bloodlines[i].stagnant + 1;
       }
       bloodlines[i] = {'survivor': survivor, 'stagnant': stagnantion };
-      console.log('#'+i+' stagnant: '+bloodlines[i].stagnant);
     }
     log({
       generation: 1 + startingResources - availableResources,
       survivorFitness: bloodlines.map(function(bloodline){
-        return ''+assessFitness(bloodline.survivor)+' stagnation: '+bloodline.stagnant;
+        var stag = '';
+        for(var i = 0; i < bloodline.stagnant; i++){
+          stag += '+';
+        }
+        return ''+Math.round(assessFitness(bloodline.survivor))+' stagnation: '+stag;
       }).sort()
     });
     availableResources--;
@@ -87,4 +94,4 @@ var calculateDistance = function(route){
   });
 }
 
-geneticSalesman(cities, calculateDistance, createRoute, alterRoute, 300);
+geneticSalesman(cities, calculateDistance, createRoute, alterRoute, 3000);
