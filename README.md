@@ -6,10 +6,11 @@ Genetic algorithms take an initial population, select survivors, mutate them, an
 For example, consider some problem where that involves selecting an ideal 9-character string, e.g. 'abcdefghi'.
 
 ####Initial generation
-To begin, we generate an initial **generation** of x=2 **bloodlines**, each with n=3 random **offspring**.
+To begin, we generate an initial **generation** of x=2 **bloodlines**\*, each with n=3 random **offspring**.
 ```
 [['abcdefgai', 'abcdxfghi', 'wtrbekvkl'], ['helaworad', 'awfluehsk', 'seklfkese']]
 ```
+*to make things easier, we suggest you begin by ignoring bloodlines (ie 1 generation = 1 bloodline).
 ####Select survivors via fitness function
 From each **bloodline** we select a **survivor** based on a **fitness function**.
 Our fitness function is related to the problem; for this arbitrary example,
