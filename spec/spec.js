@@ -102,12 +102,22 @@ describe("geneticSalesman", function(){
       routeNames.push(route[i].name);
     }
 
-    var austin = routeNames.indexOf("Austin")
-    routeNames.concat(routeNames.slice(0, austin));
+    // var austin = routeNames.indexOf("Austin")
+    // routeNames.concat(routeNames.slice(0, austin));
 
-    if(routeNames[0] === "Atlanta"){
+    // if(routeNames[0] === "Atlanta"){
+    //   routeNames.reverse();
+    // }
+
+    var austin = routeNames.indexOf("Austin");
+    routeNames= routeNames.slice(austin).concat(routeNames.slice(0, austin));
+    
+    if(routeNames[4] === "Sacramento"){
       routeNames.reverse();
     }
+
+    austin = routeNames.indexOf("Austin");
+    routeNames= routeNames.slice(austin).concat(routeNames.slice(0, austin));
 
     var equalRoutes = true;
     for(var i = 0; i < routeNames.length; i++){
