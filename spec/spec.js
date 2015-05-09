@@ -63,7 +63,7 @@ describe("alterRoute", function(){
     var parent = testCitiesShort;
     var offspring = alterRoute(parent);
     expect(parent.length).to.equal(offspring.length);
-  })
+  });
 
   it('should swap 0 or 2 values from the parent route', function(){
     var parent = testCitiesShort;
@@ -102,12 +102,15 @@ describe("geneticSalesman", function(){
       routeNames.push(route[i].name);
     }
 
-    var austin = routeNames.indexOf("Austin")
-    routeNames.concat(routeNames.slice(0, austin));
-
-    if(routeNames[0] === "Atlanta"){
+    var austin = routeNames.indexOf("Austin");
+    routeNames= routeNames.slice(austin).concat(routeNames.slice(0, austin));
+    
+    if(routeNames[4] === "Sacramento"){
       routeNames.reverse();
     }
+
+    austin = routeNames.indexOf("Austin");
+    routeNames= routeNames.slice(austin).concat(routeNames.slice(0, austin));
 
     var equalRoutes = true;
     for(var i = 0; i < routeNames.length; i++){
